@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBm7skLhL4OLD7Rcknv0RgFKSAhrHvP0Ec',
-    appId: '1:951917719006:android:1d63831d2c3d8bd6b6814f',
-    messagingSenderId: '951917719006',
-    projectId: 'usfx-asistencia-docentes-ea468',
-    storageBucket: 'usfx-asistencia-docentes-ea468.firebasestorage.app',
+    apiKey: 'AIzaSyDLEH84A3Yc4wnr5HXS-rSCjeCYCJavIio',
+    appId: '1:276442069130:android:6745e22926c386ed5c5573',
+    messagingSenderId: '276442069130',
+    projectId: 'monitoring-fr-br-usfx-2c004',
+    storageBucket: 'monitoring-fr-br-usfx-2c004.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDJT_LmnkvCnhojrwfgh3JaEwtqs9edniI',
-    appId: '1:951917719006:ios:952580e7a6b4f518b6814f',
-    messagingSenderId: '951917719006',
-    projectId: 'usfx-asistencia-docentes-ea468',
-    storageBucket: 'usfx-asistencia-docentes-ea468.firebasestorage.app',
+    apiKey: 'AIzaSyBzFh8nSRQErl9nqIR1Qi9tZzNnnN2ZKTM',
+    appId: '1:276442069130:ios:98048a9cda13d5005c5573',
+    messagingSenderId: '276442069130',
+    projectId: 'monitoring-fr-br-usfx-2c004',
+    storageBucket: 'monitoring-fr-br-usfx-2c004.firebasestorage.app',
     iosBundleId: 'com.example.usfxAsistenciaDocentesMovil',
   );
+
 }
