@@ -36,7 +36,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     try {
       final response = await dio.post(
-        'https://hsqlmjx0-5000.brs.devtunnels.ms/frav1/mdl/signIn',
+        'http://10.0.2.2:5000/frav1/mdl/signIn',
         data: {'email': email, 'password': password},
       );
 
@@ -45,11 +45,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         // Éxito: Extraer el token y crear AuthData
         final token = response.data['data']['token'];
         return AuthData(
-          userId: _extractUserIdFromToken(token), // Extraer userId del token
+          userId: _extractUserIdFromToken(token),
           token: token,
-          expirationDate: _extractExpirationDateFromToken(
-            token,
-          ), // Extraer fecha de expiración
+          expirationDate: _extractExpirationDateFromToken(token),
         );
       } else if (response.data['status'] == 'error') {
         // Error: Manejar según el mensaje
@@ -96,9 +94,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final authData = await localDataSource.getCachedAuthData();
 
       await dio.post(
-        'https://hsqlmjx0-5000.brs.devtunnels.ms/frav1/mdl/users/devices',
+        'http://10.0.2.2:5000/frav1/mdl/users/devices',
         data: {
-          'id_user': userId,
+          'id_person': userId,
           'device_token': fcmToken,
           'device_type': deviceType,
         },
@@ -147,10 +145,11 @@ String _extractUserIdFromToken(String token) {
   }
 
   final payload = parts[1];
-  final decodedPayload = base64Url.decode(payload);
+  final paddedPayload = _addBase64Padding(payload);
+  final decodedPayload = base64Url.decode(paddedPayload);
   final payloadMap = jsonDecode(utf8.decode(decodedPayload));
 
-  return payloadMap['sub']; // 'sub' es el campo que contiene el userId
+  return payloadMap['sub'].toString();
 }
 
 DateTime _extractExpirationDateFromToken(String token) {
@@ -160,10 +159,17 @@ DateTime _extractExpirationDateFromToken(String token) {
   }
 
   final payload = parts[1];
-  final decodedPayload = base64Url.decode(payload);
+  final paddedPayload = _addBase64Padding(payload);
+  final decodedPayload = base64Url.decode(paddedPayload);
   final payloadMap = jsonDecode(utf8.decode(decodedPayload));
 
-  final expirationTimestamp =
-      payloadMap['exp']; // 'exp' es el campo que contiene la fecha de expiración
+  // Corrección clave: Convertir siempre a String y luego a int
+  final expirationTimestamp = int.parse(payloadMap['exp'].toString());
+
   return DateTime.fromMillisecondsSinceEpoch(expirationTimestamp * 1000);
+}
+
+String _addBase64Padding(String encoded) {
+  final paddingNeeded = (4 - (encoded.length % 4)) % 4;
+  return encoded + ('=' * paddingNeeded);
 }
