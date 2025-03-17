@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "276442069130",
+    "project_id": "monitoring-fr-br-usfx-2c004",
+    "storage_bucket": "monitoring-fr-br-usfx-2c004.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276442069130:android:6745e22926c386ed5c5573",
+        "android_client_info": {
+          "package_name": "com.example.usfx_asistencia_docentes_movil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLEH84A3Yc4wnr5HXS-rSCjeCYCJavIio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
