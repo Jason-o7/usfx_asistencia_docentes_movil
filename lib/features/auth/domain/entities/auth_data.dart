@@ -13,4 +13,6 @@ class AuthData extends Equatable {
 
   @override
   List<Object?> get props => [userId, token, expirationDate];
+
+  get teacherId => null;
 }

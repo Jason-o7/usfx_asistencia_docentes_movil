@@ -20,18 +20,21 @@ void main() async {
 
   // Crea las instancias de los DataSources primero
   final localDataSource = AuthLocalDataSourceImpl();
-  final remoteDataSource = AuthRemoteDataSourceImpl(dio, localDataSource);
+  final remoteDataSource = AuthRemoteDataSourceImpl(dio);
 
   final authRepository = AuthRepositoryImpl(
-    localDataSource: localDataSource, // Usa la instancia creada
-    remoteDataSource: remoteDataSource, // Usa la instancia creada
+    localDataSource: localDataSource,
+    remoteDataSource: remoteDataSource,
     networkInfo: NetworkInfoImpl(connectivity),
     firebaseMessaging: firebaseMessaging,
   );
 
   // Datos de prueba
-  const email = 'gabopro@gmail.com';
-  const password = '111222333';
+  // const email = 'gabopro@gmail.com';
+  // const password = '111222333';
+
+  const email = 'eddy.navia.405@gmail.com';
+  const password = '13721401';
 
   print('Iniciando sesión...');
   final result = await authRepository.signInWithEmailAndPassword(
