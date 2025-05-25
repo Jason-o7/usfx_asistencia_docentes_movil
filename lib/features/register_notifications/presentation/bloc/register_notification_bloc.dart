@@ -4,6 +4,7 @@ import 'package:usfx_asistencia_docentes_movil/core/errors/failures.dart';
 import 'package:usfx_asistencia_docentes_movil/features/register_notifications/domain/usecases/get_active_notifications.dart';
 import 'package:usfx_asistencia_docentes_movil/features/register_notifications/presentation/bloc/register_notification_event.dart';
 import 'package:usfx_asistencia_docentes_movil/features/register_notifications/presentation/bloc/register_notification_state.dart';
+import 'package:usfx_asistencia_docentes_movil/features/register_notifications/presentation/mappers/register_notification_mapper.dart';
 
 class RegisterNotificationBloc
     extends Bloc<RegisterNotificationEvent, RegisterNotificationState> {
@@ -40,7 +41,6 @@ class RegisterNotificationBloc
       // await _markNotificationsAsRead();
       emit(RegisterNotificationsClosed(hasUnread: false));
     } else {
-      // Abrir notificaciones
       emit(RegisterNotificationsLoading());
       final result = await getActiveNotifications(
         GetActiveNotificationsParams(page: _currentPage, perPage: _perPage),
@@ -50,11 +50,14 @@ class RegisterNotificationBloc
         (failure) => emit(
           RegisterNotificationsError(message: _mapFailureToMessage(failure)),
         ),
-        (notifications) {
-          _hasReachedMax = notifications.length < _perPage;
+        (domainNotifications) {
+          final uiNotifications = NotificationMapper.toUiModel(
+            domainNotifications,
+          );
+          _hasReachedMax = uiNotifications.length < _perPage;
           emit(
             RegisterNotificationsOpen(
-              notifications: notifications,
+              notifications: uiNotifications,
               hasReachedMax: _hasReachedMax,
             ),
           );
@@ -83,7 +86,7 @@ class RegisterNotificationBloc
         _hasReachedMax = notifications.length < _perPage;
         emit(
           RegisterNotificationsOpen(
-            notifications: notifications,
+            notifications: NotificationMapper.toUiModel(notifications),
             hasReachedMax: _hasReachedMax,
           ),
         );

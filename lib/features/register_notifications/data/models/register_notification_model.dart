@@ -21,20 +21,21 @@ class RegisterNotificationModel extends RegisterNotification {
   ) {
     final subject = json['Subject'] as Map<String, dynamic>;
     final idNotification = json['id_notification'] as int;
-    String title;
-    if (json['register_type'] == 'input') {
-      title = 'Entrada Registrada';
-    } else if (json['register_type'] == 'output') {
-      title = 'Salida Registrada';
-    } else {
-      title = json['register_type'].toString();
-    }
+    // String title;
+    // if (json['register_type'] == 'input') {
+    //   title = 'Entrada Registrada';
+    // } else if (json['register_type'] == 'output') {
+    //   title = 'Salida Registrada';
+    // } else {
+    //   title = json['register_type'].toString();
+    // }
 
     return RegisterNotificationModel(
       idNotification: idNotification.toString(),
       idPerson: idPerson,
       type: json['notification_type'] as String, // attendance, system, etc
-      title: title,
+      // title: title,
+      title: json['register_type'] as String,
       subject: subject['name'] as String,
       acronym: subject['acronym'] as String,
       classroom: subject['classroom'] as String,

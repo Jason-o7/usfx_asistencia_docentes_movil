@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:usfx_asistencia_docentes_movil/core/theme/app_palette.dart';
+import 'package:usfx_asistencia_docentes_movil/features/register_notifications/domain/entities/notification_ui.dart';
 import 'package:usfx_asistencia_docentes_movil/features/register_notifications/domain/entities/register_notification.dart';
 import 'package:usfx_asistencia_docentes_movil/features/register_notifications/presentation/bloc/register_notification_bloc.dart';
 import 'package:usfx_asistencia_docentes_movil/features/register_notifications/presentation/bloc/register_notification_event.dart';
@@ -21,7 +22,7 @@ class _NotificationIconWithOverlayState
   OverlayEntry? _overlayEntry;
   final _layerLink = LayerLink();
 
-  void _showOverlay(List<RegisterNotification> notifications) {
+  void _showOverlay(List<NotificationUi> notifications) {
     _overlayEntry?.remove();
 
     _overlayEntry = OverlayEntry(
@@ -31,12 +32,11 @@ class _NotificationIconWithOverlayState
             child: CompositedTransformFollower(
               link: _layerLink,
               showWhenUnlinked: false,
-              offset: const Offset(-238, 45), // Ajustar posición
+              offset: const Offset(-238, 45),
               child: NotificationsDropdown(notifications: notifications),
             ),
           ),
     );
-
     Overlay.of(context).insert(_overlayEntry!);
   }
 

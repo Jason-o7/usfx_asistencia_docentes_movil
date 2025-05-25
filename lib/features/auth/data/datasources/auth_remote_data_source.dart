@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:usfx_asistencia_docentes_movil/core/config/api_config.dart';
 import 'package:usfx_asistencia_docentes_movil/core/errors/exceptions.dart';
 import 'package:usfx_asistencia_docentes_movil/features/auth/domain/entities/auth_data.dart';
 
@@ -37,8 +38,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     try {
       final response = await dio.post(
-        // 'https://hsqlmjx0-5000.brs.devtunnels.ms/frav1/mdl/signIn',
-        'http://10.0.2.2:5000/frav1/mdl/signIn',
+        ApiConfig.signIn,
         data: {'email': email, 'password': password},
       );
 
@@ -95,8 +95,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     try {
       await dio.post(
-        // 'https://hsqlmjx0-5000.brs.devtunnels.ms/frav1/mdl/users/devices',
-        'http://10.0.2.2:5000/frav1/mdl/users/devices',
+        ApiConfig.registerDevice,
         data: {
           'id_person': userId,
           'device_token': fcmToken,
@@ -117,7 +116,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on CacheException {
       throw AuthException(
         type: AuthErrorType.unauthorized,
-      ); // Ahora usa el mensaje predefinido
+      );
     }
   }
 

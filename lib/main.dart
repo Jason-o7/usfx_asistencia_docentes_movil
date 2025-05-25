@@ -7,10 +7,12 @@ import 'package:usfx_asistencia_docentes_movil/features/auth/presentation/pages/
 import 'package:usfx_asistencia_docentes_movil/features/home/presentation/bloc/home_bloc.dart';
 import 'package:usfx_asistencia_docentes_movil/features/home/presentation/pages/home_page.dart';
 import 'package:usfx_asistencia_docentes_movil/features/register_notifications/presentation/bloc/register_notification_bloc.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  timeago.setLocaleMessages('es', timeago.EsMessages());
   setupDependencies();
 
   runApp(const MyApp());

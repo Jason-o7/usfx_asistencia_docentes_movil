@@ -49,6 +49,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   meta: ^1.7.0
   intl: ^0.20.2
+  timeago: ^3.2.2
 
 dev_dependencies:
   flutter_test:

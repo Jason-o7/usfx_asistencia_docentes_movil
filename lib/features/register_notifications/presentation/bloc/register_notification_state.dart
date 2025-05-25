@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:usfx_asistencia_docentes_movil/features/register_notifications/domain/entities/register_notification.dart';
+import 'package:usfx_asistencia_docentes_movil/features/register_notifications/domain/entities/notification_ui.dart';
 
 @immutable
 abstract class RegisterNotificationState extends Equatable {
@@ -26,7 +26,7 @@ class RegisterNotificationsLoading extends RegisterNotificationState {}
 
 // -----------------------------------------------------------------------------------------------------------
 class RegisterNotificationsOpen extends RegisterNotificationState {
-  final List<RegisterNotification> notifications;
+  final List<NotificationUi> notifications;
   final bool hasReachedMax;
 
   const RegisterNotificationsOpen({
