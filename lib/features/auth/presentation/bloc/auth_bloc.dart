@@ -20,7 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // A T R I B U T O S - D E - E N T R A D A
     // Evento que se recibe que tambien contiene los datos de entrada
     SignInRequested event,
-    // Función que permite emitir un nuevo estado
+    // Estado que sale que tambien contiene los datos de salida
     Emitter<AuthState> emit,
   ) async {
     // Emitir el estado de carga para que la interfaz de usuario muestre un indicador de carga

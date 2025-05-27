@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:usfx_asistencia_docentes_movil/core/config/api_config.dart';
 import 'package:usfx_asistencia_docentes_movil/core/errors/exceptions.dart';
-import 'package:usfx_asistencia_docentes_movil/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:usfx_asistencia_docentes_movil/features/auth/domain/entities/auth_data.dart';
 
 abstract interface class AuthRemoteDataSource {
@@ -14,6 +14,7 @@ abstract interface class AuthRemoteDataSource {
     required String userId,
     required String fcmToken,
     required String deviceType,
+    required String authToken,
   });
   Future<void> signOut({required String token});
   Future<void> recoverPassword({required String email});
@@ -25,9 +26,10 @@ abstract interface class AuthRemoteDataSource {
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
-  final AuthLocalDataSource localDataSource;
+  // final AuthLocalDataSource localDataSource;
 
-  AuthRemoteDataSourceImpl(this.dio, this.localDataSource);
+  // AuthRemoteDataSourceImpl(this.dio, this.localDataSource);
+  AuthRemoteDataSourceImpl(this.dio);
 
   @override
   Future<AuthData> signInWithEmailAndPassword({
@@ -36,7 +38,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     try {
       final response = await dio.post(
-        'http://10.0.2.2:5000/frav1/mdl/signIn',
+        ApiConfig.signIn,
         data: {'email': email, 'password': password},
       );
 
@@ -89,12 +91,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String userId,
     required String fcmToken,
     required String deviceType,
+    required String authToken,
   }) async {
     try {
-      final authData = await localDataSource.getCachedAuthData();
-
       await dio.post(
-        'http://10.0.2.2:5000/frav1/mdl/users/devices',
+        ApiConfig.registerDevice,
         data: {
           'id_person': userId,
           'device_token': fcmToken,
@@ -102,7 +103,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         },
         options: Options(
           headers: {
-            'Authorization': 'Bearer ${authData.token}',
+            'Authorization': 'Bearer ${authToken}',
             'Content-Type': 'application/json',
           },
         ),
@@ -115,7 +116,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on CacheException {
       throw AuthException(
         type: AuthErrorType.unauthorized,
-      ); // Ahora usa el mensaje predefinido
+      );
     }
   }
 

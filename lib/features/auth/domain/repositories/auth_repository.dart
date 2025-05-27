@@ -16,7 +16,4 @@ abstract class AuthRepository {
   Future<void> registerFcmToken({required AuthData authData});
   Future<Either<Failure, bool>> validateAuthToken();
   Future<Either<Failure, AuthData?>> getCurrentAuthData();
-
-  // Estado de autenticación
-  Future<Either<Failure, bool>> isAuthenticated();
 }

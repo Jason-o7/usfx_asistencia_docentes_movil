@@ -50,9 +50,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
         await localDataSource.cacheAuthData(authData);
 
-        await registerFcmToken(authData: authData);
+        final actualAuthData = await localDataSource.getCachedAuthData();
+        await registerFcmToken(authData: actualAuthData);
 
-        return Right(authData);
+        return Right(actualAuthData);
       } on AuthException catch (e) {
         return Left(AuthFailure(message: _mapAuthError(e.type), type: e.type));
       } on ServerException catch (e) {
@@ -74,15 +75,31 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthData?>> getCurrentAuthData() {
-    // TODO: implement getCurrentAuthData
-    throw UnimplementedError();
+  Future<Either<Failure, AuthData?>> getCurrentAuthData() async {
+    try {
+      final authData = await localDataSource.getCachedAuthData();
+      return Right(authData);
+    } on CacheException {
+      return const Right(null);
+    } catch (e) {
+      return Left(
+        CacheFailure(
+          message: 'Error obteniendo credenciales',
+          operation: 'get',
+          storageType: 'local',
+        ),
+      );
+    }
   }
 
   @override
-  Future<Either<Failure, bool>> isAuthenticated() {
-    // TODO: implement isAuthenticated
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> validateAuthToken() async {
+    final authData = await localDataSource.getCachedAuthData();
+
+    final isValid = authData.expirationDate.isAfter(DateTime.now());
+    if (!isValid) await localDataSource.clearAuthData();
+
+    return Right(isValid);
   }
 
   @override
@@ -98,12 +115,6 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> validateAuthToken() {
-    // TODO: implement validateAuthToken
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> registerFcmToken({required AuthData authData}) async {
     try {
       final fcmToken = await firebaseMessaging.getToken();
@@ -113,6 +124,7 @@ class AuthRepositoryImpl implements AuthRepository {
           userId: authData.userId,
           fcmToken: fcmToken,
           deviceType: deviceType,
+          authToken: authData.token,
         );
       }
     } on ServerException catch (e) {

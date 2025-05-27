@@ -10,6 +10,11 @@ import 'package:usfx_asistencia_docentes_movil/features/auth/domain/repositories
 import 'package:usfx_asistencia_docentes_movil/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
 import 'package:usfx_asistencia_docentes_movil/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:usfx_asistencia_docentes_movil/features/home/presentation/bloc/home_bloc.dart';
+import 'package:usfx_asistencia_docentes_movil/features/register_notifications/data/datasources/register_notification_remote_data_source.dart';
+import 'package:usfx_asistencia_docentes_movil/features/register_notifications/data/repositories/register_notifications_repository_impl.dart';
+import 'package:usfx_asistencia_docentes_movil/features/register_notifications/domain/repositories/register_notification_repository.dart';
+import 'package:usfx_asistencia_docentes_movil/features/register_notifications/domain/usecases/get_active_notifications.dart';
+import 'package:usfx_asistencia_docentes_movil/features/register_notifications/presentation/bloc/register_notification_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -28,7 +33,7 @@ void setupDependencies() {
   );
 
   getIt.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(getIt(), getIt()),
+    () => AuthRemoteDataSourceImpl(getIt()),
   );
 
   // Repository
@@ -52,4 +57,26 @@ void setupDependencies() {
   );
   // Home BloC
   getIt.registerFactory<HomeBloc>(() => HomeBloc());
+
+  // Notificaciones
+  getIt.registerFactory<RegisterNotificationBloc>(
+    () => RegisterNotificationBloc(
+      getActiveNotifications: getIt<GetActiveNotifications>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetActiveNotifications>(
+    () => GetActiveNotifications(getIt<RegisterNotificationRepository>()),
+  );
+
+  getIt.registerLazySingleton<RegisterNotificationRepository>(
+    () => RegisterNotificationRepositoryImpl(
+      remoteDataSource: getIt<RegisterNotificationRemoteDataSource>(),
+      authRepository: getIt<AuthRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<RegisterNotificationRemoteDataSource>(
+    () => RegisterNotificationRemoteDataSourceImpl(dio: getIt()),
+  );
 }

@@ -22,6 +22,13 @@ abstract class AppTextStyles {
     color: color ?? AppPalette.darkTextColor,
   );
 
+  // Subtítulo con negrilla
+  static TextStyle subtitleBold({Color? color}) => _baseStyle.copyWith(
+    fontSize: 20,
+    fontWeight: FontWeight.bold, // Bold
+    color: color ?? AppPalette.darkTextColor,
+  );
+
   // Texto normal para cuerpo
   static TextStyle body({Color? color}) => _baseStyle.copyWith(
     fontSize: 16,
@@ -33,6 +40,13 @@ abstract class AppTextStyles {
   static TextStyle bodyBold({Color? color}) => _baseStyle.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.bold, // Bold
+    color: color ?? AppPalette.darkTextColor,
+  );
+
+  // Texto pequeño para detalles
+  static TextStyle caption({Color? color}) => _baseStyle.copyWith(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
     color: color ?? AppPalette.darkTextColor,
   );
 }
